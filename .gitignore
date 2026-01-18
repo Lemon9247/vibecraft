@@ -13,6 +13,11 @@ data/
 # Environment
 .env
 .env.local
+docker/.env
+
+# Docker workspace (user projects)
+workspace/*
+!workspace/README.md
 
 # IDE
 .vscode/

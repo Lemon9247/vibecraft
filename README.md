@@ -46,6 +46,33 @@ cd vibecraft && npm install && npm run dev
 
 **To uninstall:** `npx vibecraft uninstall` (removes hooks, keeps your data)
 
+## Docker (Alternative)
+
+Run Vibecraft in a container:
+
+### With Pro/Max Account
+
+```bash
+cd docker
+docker-compose up -d
+docker exec -it vibecraft claude auth login  # Sign in via browser OAuth
+open http://localhost:4003
+```
+
+### With API Key
+
+```bash
+cd docker
+cp .env.example .env
+# Edit .env and set ANTHROPIC_API_KEY
+docker-compose up -d
+open http://localhost:4003
+```
+
+Attach to sessions with `docker exec -it vibecraft tmux attach -t <session>`. You can mount projects from a `./workspace` directory
+
+See [docker/README.md](docker/README.md) for complete Docker documentation.
+
 ## Browser Control (Optional)
 
 Run Claude in tmux to send prompts from browser:

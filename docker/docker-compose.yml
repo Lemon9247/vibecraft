@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  vibecraft:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: vibecraft
+    ports:
+      - "4003:4003"
+    environment:
+      # Optional: Use API key authentication
+      # Set this in .env file or leave empty to use Pro/Max account sign-in
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+
+      # Vibecraft configuration
+      - VIBECRAFT_PORT=4003
+      - VIBECRAFT_DEBUG=${VIBECRAFT_DEBUG:-false}
+
+      # Optional: Deepgram API key for voice input
+      - DEEPGRAM_API_KEY=${DEEPGRAM_API_KEY:-}
+
+    volumes:
+      # Persist Claude Code authentication (for Pro/Max account sign-in)
+      # This stores OAuth tokens so you don't need to re-login after container restart
+      - vibecraft-claude-auth:/home/vibecraft/.claude
+
+      # Persist Vibecraft data (sessions, events, tiles)
+      - vibecraft-data:/home/vibecraft/.vibecraft/data
+
+      # Mount workspace directory for Claude to work on your projects
+      # Create a ./workspace directory and put your projects there
+      - ../workspace:/workspace
+
+      # Optional: Share your git config for commits (read-only)
+      - ~/.gitconfig:/home/vibecraft/.gitconfig:ro
+
+    restart: unless-stopped
+
+    # Enable interactive terminal for docker exec and tmux attach
+    stdin_open: true
+    tty: true
+
+volumes:
+  # Named volumes for persistent data
+  vibecraft-claude-auth:
+    driver: local
+  vibecraft-data:
+    driver: local

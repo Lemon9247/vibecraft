@@ -1,0 +1,63 @@
+# Docker build context exclusions for Vibecraft
+
+# Dependencies (will be installed in container)
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Build artifacts (will be built in container)
+dist
+
+# Version control
+.git
+.gitignore
+.github
+
+# Environment files
+.env
+.env.*
+docker/.env
+
+# Claude and Vibecraft data
+.claude
+.vibecraft
+
+# Documentation (except README)
+docs
+*.md
+!README.md
+
+# Development files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+coverage
+.nyc_output
+
+# Workspace (user projects)
+workspace
+
+# Screenshots and media
+screenshots
+*.png
+*.jpg
+*.gif
+
+# Temporary files
+tmp
+temp
+
+# Plan files
+.claude/plans
