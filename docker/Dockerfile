@@ -30,14 +30,17 @@ WORKDIR /home/vibecraft
 # Copy package files
 COPY --chown=vibecraft:vibecraft package*.json ./
 
-# Install dependencies (production only)
-RUN npm ci --omit=dev
+# Install all dependencies (needed for build)
+RUN npm ci
 
 # Copy source code
 COPY --chown=vibecraft:vibecraft . .
 
 # Build Vibecraft (both client and server)
 RUN npm run build
+
+# Remove dev dependencies to reduce image size
+RUN npm prune --production
 
 # Create data directories
 RUN mkdir -p /home/vibecraft/.vibecraft/data \
