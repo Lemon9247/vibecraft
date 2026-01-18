@@ -13,6 +13,9 @@ services:
       # Set this in .env file or leave empty to use Pro/Max account sign-in
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
 
+      # Auto-start Claude in tmux on container boot
+      - AUTO_START_CLAUDE=${AUTO_START_CLAUDE:-false}
+
       # Vibecraft configuration
       - VIBECRAFT_PORT=4003
       - VIBECRAFT_DEBUG=${VIBECRAFT_DEBUG:-false}

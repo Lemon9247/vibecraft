@@ -132,6 +132,12 @@ function isOriginAllowed(origin: string | undefined): boolean {
       return true
     }
 
+    // Allow private network IPs (for LAN/Docker access)
+    // 192.168.x.x, 10.x.x.x, 172.16-31.x.x
+    if (isPrivateIP(url.hostname)) {
+      return true
+    }
+
     // Production: exact hostname match with HTTPS required
     if (url.hostname === 'vibecraft.sh' && url.protocol === 'https:') {
       return true
@@ -141,6 +147,25 @@ function isOriginAllowed(origin: string | undefined): boolean {
   } catch {
     return false // Invalid URL format
   }
+}
+
+/**
+ * Check if hostname is a private network IP address
+ */
+function isPrivateIP(hostname: string): boolean {
+  const parts = hostname.split('.').map(Number)
+  if (parts.length !== 4 || parts.some(isNaN)) return false
+
+  // 10.0.0.0/8
+  if (parts[0] === 10) return true
+
+  // 172.16.0.0/12
+  if (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) return true
+
+  // 192.168.0.0/16
+  if (parts[0] === 192 && parts[1] === 168) return true
+
+  return false
 }
 
 /**

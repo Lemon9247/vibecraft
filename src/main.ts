@@ -83,14 +83,15 @@ function getAgentPort(): number {
 const AGENT_PORT = getAgentPort()
 
 // In dev, Vite proxies /ws and /api to the server
-// In prod (hosted), connect to localhost where user's agent runs
+// In prod, connect to the same host:port serving the page (supports remote access)
+const WS_PROTOCOL = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
 const WS_URL = import.meta.env.DEV
   ? `ws://${window.location.host}/ws`
-  : `ws://localhost:${AGENT_PORT}`
+  : `${WS_PROTOCOL}//${window.location.host}`
 
 const API_URL = import.meta.env.DEV
   ? '/api'
-  : `http://localhost:${AGENT_PORT}`
+  : `${window.location.protocol}//${window.location.host}`
 
 // Create session API instance
 const sessionAPI = createSessionAPI(API_URL)
